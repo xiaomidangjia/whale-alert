@@ -56,6 +56,7 @@ while True:
                         for j in range(len(sub_df)):
                             if sub_df['from_address_owner'][j] == '' and sub_df['to_address_owner'][j] != '' and sub_df['to_address_owner_type'][j] == 'exchange':
                                 #向telegram进行报警
+                                blockchain = sub_df['blockchain'][j]
                                 currecy_now = sub_df['currecy'][j]
                                 if currecy_now in ('BTC','ETH'):
                                     alert = '%s砸盘风险'%(currecy_now)
@@ -68,8 +69,8 @@ while True:
                                     hash_now = str(sub_df['hash_value'][j])
                                     content = '\n \
                                     【警报 —— %s】 \n \
-                                    一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s,警惕砸盘风险 \n \
-                                    具体交易哈希：%s'%(alert,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s,警惕砸盘风险 \n \
+具体交易哈希：%s'%(blockchain,alert,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     bot.sendMessage(chat_id='-840309715', text=content)
                                 else:
                                     alert = '稳定币入场'
@@ -82,8 +83,8 @@ while True:
                                     hash_now = str(sub_df['hash_value'][j])
                                     content = '\n \
                                     【警报 —— %s】 \n \
-                                    一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s。 \n \
-                                    具体交易哈希：%s'%(alert,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s。 \n \
+具体交易哈希：%s'%(blockchain,alert,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     bot.sendMessage(chat_id='-840309715', text=content)
 
 
@@ -91,4 +92,4 @@ while True:
                                 continue
                             
     else:
-        continue
+        continue;
