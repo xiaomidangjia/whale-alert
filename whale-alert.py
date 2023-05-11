@@ -16,12 +16,15 @@ df = pd.DataFrame()
 while True:
     time.sleep(1)
     s += 1
-    print(s)
+    #print(s)
     if s%180 == 0:
-        start_time=int(time.time()-180)
-        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 500000)
+        hash_data = pd.read_csv('hash_data.csv')
+        hash_list = list(hash_data['hash'])
+        #print(hash_list)
+        start_time=int(time.time()-600)
+        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 5000000)
         if success:
-            print(transactions)
+            #print(transactions)
             if len(transactions) == 0:
                 continue
             else:
@@ -49,10 +52,11 @@ while True:
                     logo = np.max(df['flag'])
                     sub_df = df[df.flag==logo]
                     sub_df = sub_df.reset_index(drop=True)
-                    print(sub_df)
+                    #print(sub_df)
                     if len(sub_df) == 0:
                         continue
                     else:
+                        sub_hash = []
                         for j in range(len(sub_df)):
                             if sub_df['from_address_owner'][j] == '' and sub_df['to_address_owner'][j] != '' and sub_df['to_address_owner_type'][j] == 'exchange':
                                 #向telegram进行报警
@@ -66,9 +70,14 @@ while True:
                                     localtime_now = str(sub_df['timestamp'][j])
                                     amount_now = str(sub_df['amount'][j])
                                     amount_usd_now = str(sub_df['amount_usd'][j])
-                                    hash_now = str(sub_df['hash_value'][j])
-                                    content = '\n \
-                                    【警报 —— %s】 \n \
+                                    hash_v = sub_df['hash_value'][j]
+                                    if hash_v in hash_list:
+                                        continue 
+                                    else:
+                                        sub_hash.append(hash_v)
+                                        hash_now = str(sub_df['hash_value'][j])
+                                        content = '\n \
+                                        【警报 —— %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s,警惕砸盘风险 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     bot.sendMessage(chat_id='-840309715', text=content)
@@ -80,9 +89,14 @@ while True:
                                     localtime_now = str(sub_df['timestamp'][j])
                                     amount_now = str(sub_df['amount'][j])
                                     amount_usd_now = str(sub_df['amount_usd'][j])
-                                    hash_now = str(sub_df['hash_value'][j])
-                                    content = '\n \
-                                    【警报 —— %s】 \n \
+                                    hash_v = sub_df['hash_value'][j]
+                                    if hash_v in hash_list:
+                                        continue 
+                                    else:
+                                        sub_hash.append(hash_v)
+                                        hash_now = str(sub_df['hash_value'][j])
+                                        content = '\n \
+                                        【警报 —— %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s。 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     bot.sendMessage(chat_id='-840309715', text=content)
@@ -90,6 +104,13 @@ while True:
 
                             else:
                                 continue
+                        #print(sub_hash)        
+                        if len(sub_hash) > 0:
+                            sub_hash_df = pd.DataFrame({'hash':sub_hash})
+                            hash_data = pd.concat([hash_data,sub_hash_df])
+                            #print(hash_data)
+                            hash_data.to_csv('hash_data.csv',index=False)
+                                
                             
     else:
         continue;
