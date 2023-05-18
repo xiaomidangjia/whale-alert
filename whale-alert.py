@@ -8,6 +8,8 @@ import datetime,time
 from whalealert.whalealert import WhaleAlert
 whale=WhaleAlert()# Specify a single transaction from the last 10 minutes>>>
 import telegram
+from dingtalkchatbot.chatbot import DingtalkChatbot
+dingding_url = 'https://oapi.dingtalk.com/robot/send?access_token=a9789d2739819eab19b07dcefe30df3fcfd9f815bf198ced54c71c557f09e7d9'
 bot = telegram.Bot(token='6219784883:AAE3YXlXvxNArWJu-0qKpKlhm4KaTSHcqpw')
 api_key='I38poa9dJRyy8qK8fG2KmSGicjXLjlLU'
 s = 0
@@ -80,7 +82,10 @@ while True:
                                         【警报 —— %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s,警惕砸盘风险 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+                                    #推送tele
                                     bot.sendMessage(chat_id='-840309715', text=content)
+                                    #推送钉钉
+                                    DingtalkChatbot(dingding_url).send_text(msg=content,is_auto_at=True)
                                 else:
                                     alert = '稳定币入场'
                                     from_address_now = sub_df['from_address'][j]
@@ -99,7 +104,10 @@ while True:
                                         【警报 —— %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s。 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+                                    #推送tele
                                     bot.sendMessage(chat_id='-840309715', text=content)
+                                    #推送钉钉
+                                    DingtalkChatbot(dingding_url).send_text(msg=content,is_auto_at=True)
 
 
                             else:
