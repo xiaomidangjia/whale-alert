@@ -88,7 +88,7 @@ while True:
                                     #推送钉钉
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
-                                    text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元,警惕砸盘风险，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
+                                    text_msg = '北京时间%s%s有%s个%s转入,当前市值为%s百万美元,具体交易点击链接。'%(localtime_now,to_address_owner_now,amount_now,currecy_now,amount_usd_now)
                                     if currecy_now == 'BTC':
                                         msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
                                     else:
@@ -100,7 +100,7 @@ while True:
                                     to_address_now = sub_df['to_address'][j]
                                     to_address_owner_now = sub_df['to_address_owner'][j]
                                     localtime_now = str(sub_df['timestamp'][j])
-                                    amount_now = str(sub_df['amount'][j])
+                                    amount_now = str(round(sub_df['amount'][j]/1000000,1))
                                     amount_usd_now = str(round(sub_df['amount_usd'][j]/1000000,1))
                                     hash_v = sub_df['hash_value'][j]
                                     if hash_v in hash_list:
@@ -117,7 +117,7 @@ while True:
                                     #推送钉钉
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
-                                    text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
+                                    text_msg = '北京时间%s%s交易所有%s百万个%s转入,具体交易点击链接。'%(localtime_now,to_address_owner_now,amount_now,currecy_now)
                                     if blockchain == 'ethereum':
                                         msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
                                     else:
