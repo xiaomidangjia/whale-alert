@@ -19,7 +19,7 @@ df = pd.DataFrame()
 while True:
     time.sleep(1)
     s += 1
-    #print(s)
+    print(s)
     if s%180 == 0:
         hash_data = pd.read_csv('hash_data.csv')
         hash_list = list(hash_data['hash'])
@@ -55,7 +55,7 @@ while True:
                     logo = np.max(df['flag'])
                     sub_df = df[df.flag==logo]
                     sub_df = sub_df.reset_index(drop=True)
-                    #print(sub_df)
+                    print(sub_df)
                     if len(sub_df) == 0:
                         continue
                     else:
