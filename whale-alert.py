@@ -89,7 +89,7 @@ while True:
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
                                     text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元,警惕砸盘风险，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                    if currecy_now == 'BTC'
+                                    if currecy_now == 'BTC':
                                         msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
                                     else:
                                         msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
@@ -118,7 +118,7 @@ while True:
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
                                     text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                    if blockchain == 'ethereum'
+                                    if blockchain == 'ethereum':
                                         msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
                                     else:
                                         msg_url = 'https://www.oklink.com/cn/trx/tx/' + hash_now
