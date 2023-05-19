@@ -25,7 +25,7 @@ while True:
         hash_list = list(hash_data['hash'])
         #print(hash_list)
         start_time=int(time.time()-600)
-        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 1000000)
+        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 500000)
         if success:
             #print(transactions)
             if len(transactions) == 0:
@@ -89,8 +89,11 @@ while True:
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
                                     text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元,警惕砸盘风险，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                    msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
-                                    xiaoding.send_link(title=title_msg, text='5678', message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
+                                    if currecy_now = 'BTC'
+                                        msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
+                                    else:
+                                        msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
+                                    xiaoding.send_link(title=title_msg, text=text_msg, message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
                                 else:
                                     alert = '稳定币入场'
                                     from_address_now = sub_df['from_address'][j]
@@ -115,8 +118,11 @@ while True:
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 —— %s】'%(alert)
                                     text_msg = '%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元，具体交易可以点击以下链接。'%(blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                    msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
-                                    xiaoding.send_link(title=title_msg, text='5678', message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
+                                    if blockchain = 'ethereum'
+                                        msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
+                                    else:
+                                        msg_url = 'https://www.oklink.com/cn/trx/tx/' + hash_now
+                                    xiaoding.send_link(title=title_msg, text=text_msg, message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
 
 
                             else:
