@@ -25,7 +25,7 @@ while True:
         hash_list = list(hash_data['hash'])
         #print(hash_list)
         start_time=int(time.time()-600)
-        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 500000)
+        success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 5000000)
         if success:
             #print(transactions)
             if len(transactions) == 0:
@@ -88,7 +88,7 @@ while True:
                                     #推送钉钉
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
                                     title_msg = '【警报 — %s】'%(alert)
-                                    text_msg = '%s%s有%s个%s转入,当前市值为%s万美元,点击链接查看。'%(localtime_now[10:18],to_address_owner_now,amount_now,currecy_now,amount_usd_now)
+                                    text_msg = '今日%s，%s有%s个%s转入,当前市值为%s万美元,点击链接查看。'%(localtime_now[10:19],to_address_owner_now,amount_now,currecy_now,amount_usd_now)
                                     if currecy_now == 'BTC':
                                         msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
                                     else:
