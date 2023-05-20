@@ -9,7 +9,7 @@ from whalealert.whalealert import WhaleAlert
 whale=WhaleAlert()# Specify a single transaction from the last 10 minutes>>>
 import telegram
 from dingtalkchatbot.chatbot import DingtalkChatbot
-webhook = 'https://oapi.dingtalk.com/robot/send?access_token=a9789d2739819eab19b07dcefe30df3fcfd9f815bf198ced54c71c557f09e7d9'
+webhook = 'https://oapi.dingtalk.com/robot/send?access_token=69d2f134c31ced0426894ed975f29b519c1a8bd163a808840ef5812c5a0477a1'
 xiaoding = DingtalkChatbot(webhook)
 bot = telegram.Bot(token='6219784883:AAE3YXlXvxNArWJu-0qKpKlhm4KaTSHcqpw')
 api_key='I38poa9dJRyy8qK8fG2KmSGicjXLjlLU'
@@ -72,7 +72,7 @@ while True:
                                     to_address_owner_now = sub_df['to_address_owner'][j]
                                     localtime_now = str(sub_df['timestamp'][j])
                                     amount_now = str(round(sub_df['amount'][j],2))
-                                    amount_usd_now = str(round(sub_df['amount_usd'][j]/1000000,1))
+                                    amount_usd_now = str(round(sub_df['amount_usd'][j]/10000,1))
                                     hash_v = sub_df['hash_value'][j]
                                     if hash_v in hash_list:
                                         continue 
@@ -80,15 +80,15 @@ while True:
                                         sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
                                         content = '\n \
-                                        【警报 —— %s】 \n \
+                                        【警报 — %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元,警惕砸盘风险 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     #推送tele
                                     bot.sendMessage(chat_id='-840309715', text=content)
                                     #推送钉钉
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
-                                    title_msg = '【警报 —— %s】'%(alert)
-                                    text_msg = '%s%s有%s个%s转入,当前市值为%s百万美元,点击链接查看。'%(localtime_now,to_address_owner_now,amount_now,currecy_now,amount_usd_now)
+                                    title_msg = '【警报 — %s】'%(alert)
+                                    text_msg = '%s%s有%s个%s转入,当前市值为%s万美元,点击链接查看。'%(localtime_now[10:18],to_address_owner_now,amount_now,currecy_now,amount_usd_now)
                                     if currecy_now == 'BTC':
                                         msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
                                     else:
@@ -100,8 +100,8 @@ while True:
                                     to_address_now = sub_df['to_address'][j]
                                     to_address_owner_now = sub_df['to_address_owner'][j]
                                     localtime_now = str(sub_df['timestamp'][j])
-                                    amount_now = str(round(sub_df['amount'][j]/1000000,1))
-                                    amount_usd_now = str(round(sub_df['amount_usd'][j]/1000000,1))
+                                    amount_now = str(round(sub_df['amount'][j]/10000,1))
+                                    amount_usd_now = str(round(sub_df['amount_usd'][j]/10000,1))
                                     hash_v = sub_df['hash_value'][j]
                                     if hash_v in hash_list:
                                         continue 
@@ -109,15 +109,15 @@ while True:
                                         sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
                                         content = '\n \
-                                        【警报 —— %s】 \n \
+                                        【警报 — %s】 \n \
 %s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元。 \n \
 具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
                                     #推送tele
                                     bot.sendMessage(chat_id='-840309715', text=content)
                                     #推送钉钉
                                     #xiaoding.send_text(msg=content,is_auto_at=True)
-                                    title_msg = '【警报 —— %s】'%(alert)
-                                    text_msg = '北京时间%s%s交易所有%s百万个%s转入,点击链接查看。'%(localtime_now,to_address_owner_now,amount_now,currecy_now)
+                                    title_msg = '【警报 — %s】'%(alert)
+                                    text_msg = '%s%s交易所有%s万个%s转入,点击链接查看。'%(localtime_now,to_address_owner_now,amount_now,currecy_now)
                                     if blockchain == 'ethereum':
                                         msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
                                     else:
