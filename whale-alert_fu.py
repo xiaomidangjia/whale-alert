@@ -8,8 +8,10 @@ import datetime,time
 from whalealert.whalealert import WhaleAlert
 whale=WhaleAlert()# Specify a single transaction from the last 10 minutes>>>
 import telegram
-from telegram import ParseMode
-bot = telegram.Bot(token='6343206405:AAHkaKIXCMvif0yqkzvTYWasYPEIsTmImgQ')
+from dingtalkchatbot.chatbot import DingtalkChatbot
+webhook = 'https://oapi.dingtalk.com/robot/send?access_token=69d2f134c31ced0426894ed975f29b519c1a8bd163a808840ef5812c5a0477a1'
+xiaoding = DingtalkChatbot(webhook)
+bot = telegram.Bot(token='6219784883:AAE3YXlXvxNArWJu-0qKpKlhm4KaTSHcqpw')
 api_key='I38poa9dJRyy8qK8fG2KmSGicjXLjlLU'
 s = 0
 df = pd.DataFrame()
@@ -34,7 +36,7 @@ while True:
                     blockchain = data['blockchain']
                     currecy = data['symbol']
                     transaction_type = data['transaction_type']
-                    if blockchain in ('bitcoin','ethereum','tron') and currecy in ('BTC','USDT','USDC') and transaction_type == 'transfer':
+                    if blockchain in ('bitcoin','ethereum','tron') and currecy in ('BTC','ETH','USDT','USDC') and transaction_type == 'transfer':
                         hash_value = data['hash']
                         from_address = data['from']['address']
                         from_address_owner = data['from']['owner']
@@ -63,7 +65,7 @@ while True:
                                 #向telegram进行报警
                                 blockchain = sub_df['blockchain'][j]
                                 currecy_now = sub_df['currecy'][j]
-                                if currecy_now in ('BTC'):
+                                if currecy_now in ('BTC','ETH'):
                                     alert = '%s砸盘风险'%(currecy_now)
                                     from_address_now = sub_df['from_address'][j]
                                     to_address_now = sub_df['to_address'][j]
@@ -77,14 +79,21 @@ while True:
                                     else:
                                         sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
-                                        msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
-                                        content_2 =  "<a href='%s'>点击链接查看转账详情</a>"%(msg_url)
-                                        content_1 = '\n \
+                                        content = '\n \
                                         【警报 — %s】 \n \
-%s链上地址%s在北京时间%s向%s交易所地址%s转入了%s万个%s,目前市值为%s万美元,警惕砸盘风险。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                        #推送tele
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_1,message_thread_id=3)
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=3)
+%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元,警惕砸盘风险 \n \
+具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+                                    #推送tele
+                                    bot.sendMessage(chat_id='-840309715', text=content)
+                                    #推送钉钉
+                                    #xiaoding.send_text(msg=content,is_auto_at=True)
+                                    title_msg = '【警报 — %s】'%(alert)
+                                    text_msg = '今日%s，%s有%s个%s转入,当前市值为%s万美元,点击链接查看。'%(localtime_now[10:19],to_address_owner_now,amount_now,currecy_now,amount_usd_now)
+                                    if currecy_now == 'BTC':
+                                        msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
+                                    else:
+                                        msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
+                                    xiaoding.send_link(title=title_msg, text=text_msg, message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
                                 else:
                                     alert = '稳定币入场'
                                     from_address_now = sub_df['from_address'][j]
@@ -99,18 +108,23 @@ while True:
                                     else:
                                         sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
-                                        if blockchain == 'ethereum':
-                                            msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
-                                        else:
-                                            msg_url = 'https://www.oklink.com/cn/trx/tx/' + hash_now
-
-                                        content_2 =  "<a href='%s'>点击链接查看转账详情</a>"%(msg_url)
-                                        content_1 = '\n \
+                                        content = '\n \
                                         【警报 — %s】 \n \
-%s链上地址%s在北京时间%s向%s交易所地址%s转入了%s万个%s,目前市值为%s万美元。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
-                                        #推送tele
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_1,message_thread_id=3)
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=3)
+%s链上一未知地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s百万美元。 \n \
+具体交易哈希：%s'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now,hash_now)
+                                    #推送tele
+                                    bot.sendMessage(chat_id='-840309715', text=content)
+                                    #推送钉钉
+                                    #xiaoding.send_text(msg=content,is_auto_at=True)
+                                    title_msg = '【警报 — %s】'%(alert)
+                                    text_msg = '%s%s交易所有%s万个%s转入,点击链接查看。'%(localtime_now,to_address_owner_now,amount_now,currecy_now)
+                                    if blockchain == 'ethereum':
+                                        msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
+                                    else:
+                                        msg_url = 'https://www.oklink.com/cn/trx/tx/' + hash_now
+                                    xiaoding.send_link(title=title_msg, text=text_msg, message_url=msg_url ,pic_url= 'http://ruusug320.hn-bkt.clouddn.com/oklink_1.jpg')
+
+
                             else:
                                 continue
                         #print(sub_hash)        
