@@ -19,7 +19,7 @@ while True:
     s += 1
     print(s)
     if s%180 == 0:
-        hash_data = pd.read_csv('hash_data.csv')
+        hash_data = pd.read_csv('/root/whale-alert/hash_data.csv')
         hash_list = list(hash_data['hash'])
         #print(hash_list)
         start_time=int(time.time()-600)
@@ -118,7 +118,7 @@ while True:
                             sub_hash_df = pd.DataFrame({'hash':sub_hash})
                             hash_data = pd.concat([hash_data,sub_hash_df])
                             #print(hash_data)
-                            hash_data.to_csv('hash_data.csv',index=False)
+                            hash_data.to_csv('/root/whale-alert/hash_data.csv',index=False)
                                 
                             
     else:
