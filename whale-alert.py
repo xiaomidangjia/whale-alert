@@ -9,7 +9,7 @@ from whalealert.whalealert import WhaleAlert
 whale=WhaleAlert()# Specify a single transaction from the last 10 minutes>>>
 import telegram
 from telegram import ParseMode
-bot = telegram.Bot(token='6343206405:AAHkaKIXCMvif0yqkzvTYWasYPEIsTmImgQ')
+bot = telegram.Bot(token='6361430672:AAG2qr7zuFQkcQb13Xtud2q8KksonuTNVN4')
 api_key='I38poa9dJRyy8qK8fG2KmSGicjXLjlLU'
 s = 0
 df = pd.DataFrame()
@@ -83,8 +83,8 @@ while True:
                                         【警报 — %s】 \n \
 %s链上地址%s在北京时间%s向%s交易所地址%s转入了%s万个%s,目前市值为%s万美元,警惕砸盘风险。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
                                         #推送tele
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_1,message_thread_id=3)
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=3)
+                                        bot.sendMessage(chat_id='-1001920263299', text=content_1,message_thread_id=2)
+                                        #bot.sendMessage(chat_id='-1001920263299', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=2)
                                 else:
                                     alert = '稳定币入场'
                                     from_address_now = sub_df['from_address'][j]
@@ -109,8 +109,8 @@ while True:
                                         【警报 — %s】 \n \
 %s链上地址%s在北京时间%s向%s交易所地址%s转入了%s万个%s,目前市值为%s万美元。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
                                         #推送tele
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_1,message_thread_id=3)
-                                        bot.sendMessage(chat_id='-1001975215255', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=3)
+                                        bot.sendMessage(chat_id='-1001920263299', text=content_1,message_thread_id=2)
+                                        #bot.sendMessage(chat_id='-1001920263299', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=2)
                             else:
                                 continue
                         #print(sub_hash)        
