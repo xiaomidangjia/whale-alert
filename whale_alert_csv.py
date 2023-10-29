@@ -20,8 +20,8 @@ while True:
     s += 1
     print(s)
     if s%180 == 0:
-        hash_data = pd.read_csv('/root/whale-alert/hash_data.csv')
-        hash_list = list(hash_data['hash'])
+        hash_data = pd.read_csv('/root/whale-alert/res_alert.csv')
+        hash_list = list(set(hash_data['hash']))
         #print(hash_list)
         start_time=int(time.time()-600)
         success,transactions,status=whale.get_transactions(start_time,api_key=api_key,min_value = 5000000)
@@ -58,7 +58,6 @@ while True:
                     if len(sub_df) == 0:
                         continue
                     else:
-                        sub_hash = []
                         for j in range(len(sub_df)):
                             if sub_df['from_address_owner'][j] == '' and sub_df['to_address_owner'][j] != '' and sub_df['to_address_owner_type'][j] == 'exchange':
                                 #向telegram进行报警
@@ -76,13 +75,12 @@ while True:
                                     if hash_v in hash_list:
                                         continue 
                                     else:
-                                        sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
                                         msg_url = 'https://www.oklink.com/cn/btc/tx/' + hash_now
                                         content_2 =  "<a href='%s'>点击链接查看转账详情</a>"%(msg_url)
                                         content_1 = '\n \
                                         【警报 — %s】 \n \
-%s链上地址%s在北京时间%s向%s交易所地址%s转入了%s万个%s,目前市值为%s万美元,警惕砸盘风险。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
+%s链上地址%s在北京时间%s向%s交易所地址%s转入了%s个%s,目前市值为%s万美元,警惕砸盘风险。'%(alert,blockchain,from_address_now,localtime_now,to_address_owner_now,to_address_now,amount_now,currecy_now,amount_usd_now)
                                         #推送tele
                                         bot.sendMessage(chat_id='-1001920263299', text=content_1,message_thread_id=2)
                                         #bot.sendMessage(chat_id='-1001920263299', text=content_2, parse_mode = ParseMode.HTML,message_thread_id=2)
@@ -103,7 +101,6 @@ while True:
                                     if hash_v in hash_list:
                                         continue 
                                     else:
-                                        sub_hash.append(hash_v)
                                         hash_now = str(sub_df['hash_value'][j])
                                         if blockchain == 'ethereum':
                                             msg_url = 'https://www.oklink.com/cn/eth/tx/' + hash_now
@@ -123,14 +120,6 @@ while True:
                                         df = pd.concat([df,sub_df])
                                         df.to_csv('/root/whale-alert/res_alert.csv',index=False)
                             else:
-                                continue
-                        #print(sub_hash)        
-                        if len(sub_hash) > 0:
-                            sub_hash_df = pd.DataFrame({'hash':sub_hash})
-                            hash_data = pd.concat([hash_data,sub_hash_df])
-                            #print(hash_data)
-                            hash_data.to_csv('/root/whale-alert/hash_data.csv',index=False)
-                                
-                            
+                                continue                            
     else:
         continue;
