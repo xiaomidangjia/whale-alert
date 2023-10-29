@@ -3,7 +3,8 @@ import time
 from pprint import pprint
 import pandas as pd
 import numpy as np
-import datetime,time
+import time
+from datetime import datetime
 # For formatted dictionary printing>>>
 from whalealert.whalealert import WhaleAlert
 whale=WhaleAlert()# Specify a single transaction from the last 10 minutes>>>
